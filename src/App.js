@@ -1,7 +1,6 @@
 import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Home from "./pages/Home";
 import All from "./pages/All";
 
@@ -63,7 +62,7 @@ export function App() {
   function addTask(e) {
     e.preventDefault();
     const path = '/api/tasks/'
-    const url = `${process.env.REACT_APP_API_ORIGIN}${path}`;
+    let url = `${process.env.REACT_APP_API_ORIGIN}${path}`;
     const params = new FormData(e.currentTarget);
     axios.post(url, {
       name: params.get("name"),
@@ -74,13 +73,15 @@ export function App() {
     }).then((response) => {
       setPost(response.data);
     });
+    url = process.env.REACT_APP_API_ORIGIN;
+    axios.get(url);
   }
 
   return (
     <BrowserRouter>
       <Header today={today} />
       <Routes>
-        <Route exact path={`/`} element={<Home />}/>
+        <Route exact path={`/`} element={<Home today={today} />}/>
         <Route path={`/all`} element={<All />}/>
       </Routes>
       <Form addTask={addTask} />

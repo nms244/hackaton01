@@ -6,7 +6,7 @@ import { Day } from "../components/Day.js";
 
 function Result(props) {
   const taskTimes = props.tasks.map(task => {
-    return task.required_time;
+    return task.task_required_time;
   });
   const sumTime = taskTimes.reduce(function(sum, element){
     return sum + element;
@@ -21,7 +21,7 @@ function Result(props) {
 }
 
 function All(props) {
-  const path = '/api/tasks/filter/student/1'
+  const path = '/api/tasks/filter/week/1'
   const url = `${process.env.REACT_APP_API_ORIGIN}${path}`;
   const [tasks, setTasks] = useState(null);
   const [weekday, setWeekday] = useState('月');
@@ -30,13 +30,24 @@ function All(props) {
       setTasks(response.data);
     });
   }, []);
-
   if (!tasks) return 'loading...';
+
+  let allTasks = [];
+  for(let key in tasks) {
+    allTasks.push(tasks[key]);
+  }
+
+  let timeOnTask = {};
+  allTasks.map(tasksOnDay => {
+    tasksOnDay.map(task => {
+      timeOnTask[String(task.task)] = timeOnTask[String(task.task)] ? timeOnTask[String(task.task)] + task.done_per_day : task.done_per_day;
+    })
+  });
 
   return (
     <>
-      <Result tasks={tasks} />
-      <Day tasks={tasks} />
+      {/* <Result tasks={tasks['月']} /> */}
+      <Day tasks={tasks['月']} timeOnTask={timeOnTask} />
     </>
   );
 }
