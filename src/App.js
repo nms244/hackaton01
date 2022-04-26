@@ -76,7 +76,7 @@ export function App() {
     url = process.env.REACT_APP_API_ORIGIN;
     axios.get(url);
   }
-
+   const day = today || getToday();
   return (
     <BrowserRouter>
       <Header today={today} />

@@ -3,7 +3,7 @@ export function TaskOnDay(props) {
   const done_time     = props.sumTime;
   return(
     <li key={props.task.task}>
-      {props.task.task_name} : {props.task.task_content} --- {done_time} / {required_time}
+      {props.task.task_name} : {props.task.task_content} --- {done_time} / {required_time} 分
     </li>
   );
 }
